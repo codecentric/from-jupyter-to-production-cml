@@ -22,5 +22,6 @@ with open("metrics.txt", "w") as outfile:
 
 y_pred = clf.predict(X_test)
 # plot it
-ConfusionMatrixDisplay.from_predictions(y_test,y_pred)
+display = ConfusionMatrixDisplay.from_predictions(y_test,y_pred)
+display.plot()
 plt.savefig("confusion_matrix.png")
