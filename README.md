@@ -13,16 +13,19 @@ In this repository, we demonstrate how to use CML in the context of MLOps. You'l
 To use this template for your MLOps project, follow these steps:
 
 1. **Create a new repository from this template**:
+
    - Click the "Use this template" button at the top of this page. 🗳️
    - Follow the prompts to create your new repository based on this template.
 
 2. **Clone your new repository**:
+
    ```
    git clone https://github.com/yourusername/your-mlops-repo.git
    cd your-mlops-repo
    ```
 
 3. **Add a trigger event to the `.github/workflows/pipeline.yaml`**:
+
    - Open `.github/workflows/pipeline.yaml`
    - Add a workflow trigger event (e.g. `push`) into line two
 
@@ -32,7 +35,7 @@ To use this template for your MLOps project, follow these steps:
 
 CML is integrated into this template using GitHub Actions. The `pipeline.yaml` workflow file in the `.github/workflows` directory specifies how to run CML commands to create reports and visuals. You can customize this file to generate different types of reports, publish them as GitHub Actions artifacts, and notify your team about the workflow's status. 📊🚀
 
-For more information on how to use CML, refer to the [CML documentation](https://docs.cml.dev). 📚
+For more information on how to use CML, refer to the [CML documentation](https://cml.dev/doc). 📚
 
 ## License 📜
 
