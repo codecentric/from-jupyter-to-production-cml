@@ -1,23 +1,41 @@
-name: model-training
-on: []
-jobs:
-  run:
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-      - uses: iterative/setup-cml@v2
-      - name: Train model
-        env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          pip install -r requirements.txt
-          python get_data.py
-          python train.py
+name: CI/CD Pipeline
 
-          cat metrics.txt >> report.md
-          echo '![](./confusion_matrix.png "Confusion Matrix")' >> report.md
-          cml comment create report.md
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build-and-train:
+    runs-on: ubuntu-latest
+    permissions:
+      write-all
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Dagster Pipeline
+        run: |
+          dagster job execute -f dagster_train.py -j rf_training_pipeline 
+
+      - name: Set Up CML
+        uses: iterative/setup-cml@v2
+
+      - name: Report Metrics with CML
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cml comment create --file metrics.txt

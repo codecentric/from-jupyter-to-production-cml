@@ -1,52 +1,76 @@
-# CML MLOps Template 🤖🔬📦
+# Dagster + CML MLOps Template 🤖🔬🛠️
 
-This repository serves as a template for integrating [CML (Continuous Machine Learning)](https://cml.dev) into your MLOps workflow. CML allows you to automate and standardize machine learning workflows using for example GitHub Actions. 🚀💻
+This repository is a minimal example of how to integrate [CML (Continuous Machine Learning)](https://cml.dev) and 
+[Dagster](https://dagster.io) into your MLOps workflow. 
+It uses GitHub Actions to orchestrate and automate a simple machine learning pipeline with reporting directly on your pull requests. 🚀🔁
 
 ## Introduction 📄🚀
 
-Continuous Machine Learning is a framework for automating machine learning workflows, including data preprocessing, model training, evaluation, and deployment, all within a Git and GitHub environment. By using CML, you can ensure that your machine learning pipelines are reproducible, well-documented, and collaborative. 🧪🔍💼
+This project demonstrates how to implement a CI/CD pipeline using GitHub Actions that:
+- Executes a [Dagster](https://dagster.io) job to train and evaluate a machine learning model (Random Forest).
+- Uses [CML](https://cml.dev) to report metrics (e.g., accuracy) back to GitHub via PR comments.
 
-In this repository, we demonstrate how to use CML in the context of MLOps. You'll find an example machine learning workflow using Python and popular libraries such as scikit-learn. The workflow consists of data preprocessing, model training, model evaluation, and CML-based reporting. 🐍📊📈
+By combining these tools, you get a reproducible, automated, and collaborative machine learning workflow in a fully
+Git-based environment. 🧪🛠️📊
+
+## What's Inside 🧬📁
+
+- **Dagster Pipeline**: A simple ML job defined in Python using Dagster to:
+  - Load and split the Iris dataset.
+  - Train a `RandomForestClassifier`.
+  - Evaluate the model’s accuracy.
+  
+- **GitHub Actions Workflow**: A CI/CD pipeline in `.github/workflows/pipeline.yml` that:
+  - Sets up Python.
+  - Installs dependencies.
+  - Executes the Dagster job via CLI.
+  - Logs accuracy to a file.
+  - Posts a comment on the PR using CML.
 
 ## Getting Started 🛠️🏁
 
-To use this template for your MLOps project, follow these steps:
+To get this template running in your own repo:
 
-1. **Create a new repository from this template**:
+1. **Create a new repository using this template**:
+   - Click “Use this template” at the top right.
+   - Name your new repository.
 
-   - Click the "Use this template" button at the top of this page. 🗳️
-   - Follow the prompts to create your new repository based on this template.
-
-2. **Clone your new repository**:
-
-   ```
+2. **Clone your new repo locally**:
+   ```bash
    git clone https://github.com/yourusername/your-mlops-repo.git
    cd your-mlops-repo
    ```
 
-3. **Add a trigger event to the `.github/workflows/pipeline.yaml`**:
+3. **Customize and test your workflow**:
+   - The GitHub Actions workflow is already set to trigger on `pull_request` with the `main` branch as a target.
+   - You can manually trigger it by creating or updating a pull request with main as the target branch.
 
-   - Open `.github/workflows/pipeline.yaml`
-   - Add a workflow trigger event (e.g. `push`) into line two
+4. **View the results**:
+   - Once the CI job completes, CML will post an accuracy score as a comment on the PR.
+   - This ensures quick visibility into model performance without switching tools.
 
-4. **Commit and push your changes**
+## CML Reporting 📢📊
 
-## CML Reporting 📢📄
+CML is used to post model evaluation results back to GitHub. Here's how it's done:
 
-CML is integrated into this template using GitHub Actions. The `pipeline.yaml` workflow file in the `.github/workflows` directory specifies how to run CML commands to create reports and visuals. You can customize this file to generate different types of reports, publish them as GitHub Actions artifacts, and notify your team about the workflow's status. 📊🚀
+- During the GitHub Actions run, the Dagster job writes model accuracy to a `metrics.txt` file.
+- CML reads this file and posts the contents as a PR comment using:
+  ```bash
+  cml comment create --file metrics.txt
+  ```
 
-For more information on how to use CML, refer to the [CML documentation](https://cml.dev/doc). 📚
+You can expand on this by:
+- Adding plots (e.g., confusion matrix).
+- Tracking experiments with DVC or MLFlow.
+- Exporting models or data as artifacts.
+
+More info in the [CML Docs](https://docs.cml.dev).
 
 ## License 📜
 
-This repository is provided under the [MIT License](LICENSE). Feel free to modify and use it for your MLOps projects. 📄📇
+This project is licensed under the [MIT License](LICENSE). Use, modify, and share freely!
 
-## Acknowledgments 🙏👏
+## Acknowledgments 🙏
 
-This template is inspired by the amazing work done by the CML community and the broader MLOps community. 🌟🌍
-
-## Feedback and Contributions 🤝📣
-
-We welcome feedback and contributions to this template. If you have suggestions or improvements, please open an issue or submit a pull request. 🙌🛠️
-
-Happy MLOps and CML integration! 🚀🧠📊🤖
+- Huge thanks to the CML and Dagster communities.
+- Inspiration from MLOps best practices and real-world workflows.
